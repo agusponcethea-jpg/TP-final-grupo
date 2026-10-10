@@ -91,26 +91,10 @@ function setup() {
 function draw() {
   background(0);
 
-  if (pantalla === 0) {
+ if (pantalla === 0) {
   if (mostrarCreditos) {
-    
-    if (transicionandoCreditos) {
-      posXCreditos -= 10; // Velocidad del deslizamiento
-      
-      
-      if (posXCreditos <= -width) {
-        transicionandoCreditos = false;
-        mostrarCreditos = false;
-        posXCreditos = 0; // se reinicia la posición
-        pantalla = 1;
-        estadoTexto1 = 0;
-      }
-    }
-    image(creditos, posXCreditos, 0, width, height);
-    if (!transicionandoCreditos) {
-      dibujarBotones(["volverCreditos"]);
-    }
-    
+    image(creditos, 0, 0, width, height);
+    dibujarBotones(["volverCreditos"]); // <-- Agrégale esta línea aquí adentro
   } else {
     image(imagenes[0], 0, 0, width, height);
   }
@@ -578,10 +562,7 @@ function ejecutarBoton(acciones) {
         pantalla = 0;
         mostrarCreditos = true;
       }
-       if (b.accion === "volverCreditos") {
-  transicionandoCreditos = true; 
-}
-      return true;
+      return false;
     }
   return false;
 }
