@@ -25,6 +25,9 @@ let finalUno;
 let finalDos;
 let finalTres;
 
+let sonido;
+let creditos;
+
 let mostrarCreditos = false;
 
 let botones = [
@@ -65,7 +68,7 @@ function preload() {
   for (let i = 0; i < 14; i++){
     imagenes[i] = loadImage("data/pantalla" + i + ".png");
   }
-  
+  sonido = loadSound("data/pianoloop.wav");
   burbujaTexto = loadImage("data/burbuja.png");
   personajeBruno = loadImage("data/Bruno.png");
   personajeMayordomo = loadImage("data/Mayordomo.png");
@@ -74,37 +77,25 @@ function preload() {
   finalUno = loadImage("data/uno.png");
   finalDos = loadImage("data/dos.png");
   finalTres = loadImage("data/tres.png");
+  creditos = loadImage("data/creditos.png");
 }
 
 function setup() {
   createCanvas(800, 450);
   textFont("Courier");
-}
+  }
 
 function draw() {
   background(0);
-
-  if (pantalla >= 0 && pantalla < imagenes.length) {
-    image(imagenes[pantalla], 0, 0, width, height);
-  }
-
-  // PANTALLA CERO
+  
   if (pantalla === 0) {
-    if (mostrarCreditos) {
-      fill(235, 210, 170);
-      stroke(60, 40, 25);
-      strokeWeight(3);
-      rect(180, 100, 440, 250, 8);
-      noStroke();
-      fill(30, 20, 15);
-      textAlign(CENTER, CENTER);
-      textSize(30);
-      text("Créditos", 400, 145);
-      dibujarBotones(["volverCreditos"]);
-    } else {
-    }
+  if (mostrarCreditos) {
+    image(creditos, 0, 0, width, height);
+    dibujarBotones(["volverCreditos"]); // <-- Agrégale esta línea aquí adentro
+  } else {
+    image(imagenes[0], 0, 0, width, height);
   }
-
+}
   // PANTALLA UNO
   if (pantalla === 1) {
     if (estadoTexto1 === 0) {
@@ -728,3 +719,6 @@ function mousePressed() {
     return;
   }
 }
+  function mousePressed(){
+    sonido.loop();
+  }
