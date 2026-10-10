@@ -560,7 +560,7 @@ function ejecutarBoton(acciones) {
       }
       if (b.accion === "reiniciar") {
         pantalla = 0;
-        mostrarCreditos = true;
+        mostrarCreditos = false;
       }
       return false;
     }
