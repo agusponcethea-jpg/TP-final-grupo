@@ -26,6 +26,9 @@ let finalDos;
 let finalTres;
 
 let sonido;
+
+let posXCreditos = 0;
+let transicionandoCreditos = false;
 let creditos;
 
 let mostrarCreditos = false;
@@ -87,15 +90,32 @@ function setup() {
 
 function draw() {
   background(0);
-  
+
   if (pantalla === 0) {
   if (mostrarCreditos) {
-    image(creditos, 0, 0, width, height);
-    dibujarBotones(["volverCreditos"]); // <-- Agrégale esta línea aquí adentro
+    
+    if (transicionandoCreditos) {
+      posXCreditos -= 10; // Velocidad del deslizamiento
+      
+      
+      if (posXCreditos <= -width) {
+        transicionandoCreditos = false;
+        mostrarCreditos = false;
+        posXCreditos = 0; // se reinicia la posición
+        pantalla = 1;
+        estadoTexto1 = 0;
+      }
+    }
+    image(creditos, posXCreditos, 0, width, height);
+    if (!transicionandoCreditos) {
+      dibujarBotones(["volverCreditos"]);
+    }
+    
   } else {
     image(imagenes[0], 0, 0, width, height);
   }
 }
+      
   // PANTALLA UNO
   if (pantalla === 1) {
     if (estadoTexto1 === 0) {
@@ -558,9 +578,11 @@ function ejecutarBoton(acciones) {
         pantalla = 0;
         mostrarCreditos = false;
       }
+       if (b.accion === "volverCreditos") {
+  transicionandoCreditos = true; 
+}
       return true;
     }
-  }
   return false;
 }
 
