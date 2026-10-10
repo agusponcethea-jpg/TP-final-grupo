@@ -576,7 +576,7 @@ function ejecutarBoton(acciones) {
       }
       if (b.accion === "reiniciar") {
         pantalla = 0;
-        mostrarCreditos = false;
+        mostrarCreditos = true;
       }
        if (b.accion === "volverCreditos") {
   transicionandoCreditos = true; 
