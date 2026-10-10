@@ -10,8 +10,8 @@ let estadoTexto5 = 0;
 let estadoTexto6 = 0;
 let estadoTexto7 = 0;
 let estadoTexto8 = 0;
-let estadoTexto9 = 0; 
-let estadoTexto10 = 0; 
+let estadoTexto9 = 0;
+let estadoTexto10 = 0;
 let estadoTexto11 = 0;
 let estadoTexto12 = 0;
 let estadoTexto13 = 0;
@@ -26,17 +26,19 @@ let finalDos;
 let finalTres;
 
 let sonido;
-
-let posXCreditos = 0;
-let transicionandoCreditos = false;
 let creditos;
+
+let ojoIzq = [];
+let ojoDer = [];
+let frameActual = 0;
+let tiempoAnimacion = 0;
 
 let mostrarCreditos = false;
 
 let botones = [
   {texto: "Jugar", x: 320, y: 235, w: 170, h: 50, accion: "jugar"},
   {texto: "Créditos", x: 290, y: 290, w: 230, h: 60, accion: "creditos"},
-  {texto: "Volver", x: 180, y: 275, w: 440, h: 60, accion: "volverCreditos"},
+  {texto: "Volver", x: 110, y: 350, w: 90, h: 35, accion: "volverCreditos"},
   {texto: "Ir a la escena del crimen", x: 140, y: 400, w: 250, h: 40, accion: "crimen"},
   {texto: "Revisar expedientes en la PC", x: 400, y: 400, w: 250, h: 40, accion: "expedientes"},
   {texto: "Volver", x: 30, y: 385, w: 90, h: 35, accion: "volverPC"},
@@ -64,13 +66,18 @@ let botones = [
   {texto: "Acusar formalmente al Mayordomo", x: 530, y: 400, w: 250, h: 40, accion: "acusarMayordomo"},
   {texto: "Guardar el pañuelo", x: 140, y: 400, w: 250, h: 40, accion: "guardarPañuelo"},
   {texto: "Buscar notas o registros", x: 400, y: 400, w: 250, h: 40, accion: "buscarRegistro"},
-  {texto: "Fin", x: 30, y: 400, w: 80, h: 35, accion: "reiniciar"} // NUEVO BOTÓN DE FIN
+  {texto: "Fin", x: 30, y: 400, w: 80, h: 35, accion: "reiniciar"}
 ];
 
 function preload() {
   for (let i = 0; i < 14; i++){
     imagenes[i] = loadImage("data/pantalla" + i + ".png");
   }
+  for (let i = 0; i <= 5; i++) {
+    ojoIzq[i] = loadImage("data/sprite" + i + "_izq.png");
+    ojoDer[i] = loadImage("data/sprite" + i + "_der.png");
+  }
+  
   sonido = loadSound("data/pianoloop.wav");
   burbujaTexto = loadImage("data/burbuja.png");
   personajeBruno = loadImage("data/Bruno.png");
@@ -86,20 +93,36 @@ function preload() {
 function setup() {
   createCanvas(800, 450);
   textFont("Courier");
-  }
+}
 
 function draw() {
   background(0);
 
- if (pantalla === 0) {
-  if (mostrarCreditos) {
-    image(creditos, 0, 0, width, height);
-    dibujarBotones(["volverCreditos"]); // <-- Agrégale esta línea aquí adentro
-  } else {
-    image(imagenes[0], 0, 0, width, height);
+  if (pantalla > 0 && pantalla < 14 && imagenes[pantalla]) {
+    image(imagenes[pantalla], 0, 0, width, height);
   }
-}
+
+if (pantalla === 0) {
+    if (mostrarCreditos) {
       
+      image(creditos, 0, 0, width, height);
+      
+      tiempoAnimacion++;
+      if (tiempoAnimacion > 10) {
+        frameActual = (frameActual + 1) % 6;
+        tiempoAnimacion = 0;
+      }
+      
+      image(ojoIzq[frameActual], 600, 400);
+      image(ojoDer[frameActual], 640, 400);
+      
+      dibujarBotones(["volverCreditos"]);
+      
+    } else {
+      image(imagenes[0], 0, 0, width, height);
+    }
+  }
+  
   // PANTALLA UNO
   if (pantalla === 1) {
     if (estadoTexto1 === 0) {
@@ -451,6 +474,9 @@ function ejecutarBoton(acciones) {
       if (b.accion === "jugar") {
         pantalla = 1;
         estadoTexto1 = 0;
+        if (sonido && !sonido.isPlaying()) {
+          sonido.loop();
+        }
       }
       if (b.accion === "creditos") mostrarCreditos = true;
       if (b.accion === "volverCreditos") mostrarCreditos = false;
@@ -562,8 +588,9 @@ function ejecutarBoton(acciones) {
         pantalla = 0;
         mostrarCreditos = false;
       }
-      return false;
+      return true;
     }
+  }
   return false;
 }
 
@@ -722,6 +749,3 @@ function mousePressed() {
     return;
   }
 }
-  function mousePressed(){
-    sonido.loop();
-  }
