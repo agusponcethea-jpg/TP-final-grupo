@@ -5,6 +5,7 @@ class Personaje {
     this.diametro = 40;
     this.velocidad = 5;
     this.hue = random(360);
+    this.vida = 3;
   }
 
   mover() {
@@ -20,13 +21,15 @@ class Personaje {
   }
 
   dibujar() {
-    fill(this.hue, 80, 90);
-    noStroke();
-    circle(this.x, this.y, this.diametro);
-  }
-
-  cambiarColor() {
-    this.hue = random(360);
+    if (persona) {
+      imageMode(CENTER);
+      image(persona, this.x, this.y, this.diametro, this.diametro);
+      imageMode(CORNER);
+    } else {
+      fill(this.hue, 80, 90);
+      noStroke();
+      circle(this.x, this.y, this.diametro);
+    }
   }
 
   colision(bala) {
