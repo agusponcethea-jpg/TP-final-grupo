@@ -1,3 +1,4 @@
+//https://youtu.be/63VRbn-MJNA
 let personaje;
 let balas = [];
 let vidas = 3;
